@@ -89,7 +89,7 @@ const generatedId = () => Math.floor(Math.random() * 10000);
 const hasName = (name) =>
   persons.find((person) => person.name.toLowerCase() === name.toLowerCase());
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, (req, res) => {
   console.log(`Server running on port ${PORT}`);
 });
