@@ -70,6 +70,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
   // res.status(204).end();
   Person.findByIdAndDelete(req.params.id)
     .then((result) => {
+      res.json(result);
       res.status(204).end();
     })
     .catch((error) => next(error));
