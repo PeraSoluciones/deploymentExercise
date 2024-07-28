@@ -18,7 +18,7 @@ Content-Type: application/json
 
 {
     "name": "Adriana",
-    "phone": "+593-0989-768444"
+    "number": "+593-0989-768444"
 }
 
 ###
@@ -28,7 +28,7 @@ Content-Type: application/json
 
 {
     "name": "Jorge",
-    "phone": "+593-0954-213578"
+    "number": "+593-0954-213578"
 }
 
 ###
@@ -37,7 +37,7 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "phone": "+593-0954-213578"
+    "number": "+593-0954-213578"
 }
 
 ###
@@ -47,5 +47,15 @@ Content-Type: application/json
 
 {
     "name": "Jorge",
-    "phone": "+593-0985325481"
+    "number": "+593-0985325481"
+}
+
+###
+
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Adriana",
+    "number": "+593 0976481288"
 }
