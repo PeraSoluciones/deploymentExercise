@@ -76,19 +76,22 @@ app.delete('/api/persons/:id', (req, res, next) => {
     .catch((error) => next(error));
 });
 
-app.post('/api/persons', async (req, res) => {
+app.post('/api/persons', async (req, res, next) => {
   const body = req.body;
   console.log(body);
-  if (!body.name || !body.number)
-    return res.status(404).json({ error: 'content missing' });
-  if (await hasName(body.name))
-    return res.status(404).json({ error: 'name must be unique' });
+  // if (!body.name || !body.number)
+  //   return res.status(404).json({ error: 'content missing' });
+  // if (await hasName(body.name))
+  //   return res.status(404).json({ error: 'name must be unique' });
   // const person = { id: generatedId(), name: body.name, number: body.number };
   // persons = persons.concat(person);
   const person = new Person({ name: body.name, number: body.number });
-  person.save().then((savedPerson) => {
-    res.json(savedPerson);
-  });
+  person
+    .save()
+    .then((savedPerson) => {
+      res.json(savedPerson);
+    })
+    .catch((err) => next(err));
 });
 
 app.put('/api/persons/:id', (req, res, next) => {
@@ -96,7 +99,11 @@ app.put('/api/persons/:id', (req, res, next) => {
 
   const person = { name: body.name, number: body.number };
 
-  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+  Person.findByIdAndUpdate(req.params.id, person, {
+    new: true,
+    runValidators: true,
+    context: 'query',
+  })
     .then((updatedPerson) => {
       res.json(updatedPerson);
     })
@@ -123,7 +130,9 @@ const hasName = async (name) => {
 const errorHandler = (err, req, res, next) => {
   console.log(err);
   if (err.name === 'CastError')
-    return res.status(400).send({ error: 'maslformatted id' });
+    return res.status(400).send({ error: 'malformatted id' });
+  if (err.name === 'ValidationError')
+    return res.status(400).send({ error: err.message });
   next(err);
 };
 
